@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package tag;
+
+service TagService {
+    // 创建 Tag
+    rpc CreateTag (CreateTagRequest) returns (CreateTagReply);
+    // 修改 Tag
+    rpc EditTag (EditTagRequest) returns (EditTagReply);
+    // Tag 列表
+    rpc ListTags (ListTagsRequest) returns (ListTagsReply);
+    // 删除/恢复分类
+    rpc ToggleTag (ToggleTagRequest) returns (ToggleTagReply);
+    // 检查分类是否存在
+    rpc TagExists (TagExistsRequest) returns (TagExistsReply);
+    // 获取分类信息
+    rpc GetTagInfo (GetTagInfoRequest) returns (GetTagInfoReply);
+}
+
+message Tag {
+    int32 id = 1;
+    string name = 2;
+    bool is_del = 3;
+}
+
+message CreateTagRequest {
+    string name = 1;
+}
+
+message CreateTagReply {
+    int32 id = 1;
+}
+
+message EditTagRequest {
+    int32 id = 1;
+    string name = 2;
+}
+
+message EditTagReply {
+    int32 id = 1;
+    bool ok = 2;
+}
+
+message ListTagsRequest {
+    optional string name = 1; // 根据名称
+    optional bool is_del = 2; // 根据是否已被删除
+}
+
+message ListTagsReply {
+    repeated Tag tags = 1;
+}
+
+message ToggleTagRequest {
+    int32 id = 1;
+}
+
+message ToggleTagReply {
+    int32 id = 1;
+    bool is_del = 2;
+}
+
+message TagExistsRequest {
+    oneof condition {
+        string name = 1;
+        int32 id = 2;
+    }
+}
+
+message TagExistsReply {
+    bool exists = 1;
+}
+
+message GetTagInfoRequest {
+    int32 id = 1;
+    optional bool is_del = 2;
+}
+
+message GetTagInfoReply {
+    optional Tag tag = 1;
+}
