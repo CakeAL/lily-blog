@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package post;
+
+import "google/protobuf/timestamp.proto";
+
+service PostService {
+    // 创建文章
+    rpc CreatePost(CreatePostRequest) returns (CreatePostReply);
+    // 修改文章
+    rpc EditPost(EditPostRequest) returns (EditPostReply);
+    // 根据信息搜索文章
+    rpc ListPosts(ListPostRequest) returns (ListPostReply);
+    // 删除/恢复文章
+    rpc TogglePost(TogglePostRequest) returns (TogglePostReply);
+    // 获取文章
+    rpc GetPost(GetPostRequest) returns (GetPostReply);
+}
+
+message Post {
+    int32 id = 1; 
+    string title = 2; // 标题
+    repeated int32 tag_id = 3; // 标签
+    string summary = 4; // 摘要
+    string md_path = 5; // markdown 文件的路径
+    string html_path = 6; // 根据 markdown 生成的 html 文件路径
+    int32 hit = 7; // 点击数
+    int32 words_len = 8; // 字数 
+    bool is_del = 9; // 是否删除
+    google.protobuf.Timestamp publish_time = 10; // 发布文章时间
+    google.protobuf.Timestamp update_time = 11; // 最后更新时间
+}
+
+message CreatePostRequest {
+    string title = 1;
+    repeated int32 tag_id = 2;
+    string md_path = 3; // 根据 md_path 读取 markdown 文件，然后转换为 html
+    optional string summary = 4; // 如果没有提供摘要，则自动从内容中截取
+}
+
+message CreatePostReply {
+    int32 id = 1;
+}
+
+message EditPostRequest {
+    int32 id = 1;
+    string title = 2;
+    repeated int32 tag_id = 3;
+    string md_path = 4;
+    optional string summary = 5;
+}
+
+message EditPostReply {
+    int32 id = 1;
+    bool ok = 2;
+}
+
+message ListPostRequest {
+    optional int32 page = 1; // 页码
+    optional int32 tag_id = 2; // 标签
+    optional string keyword = 3; // 关键字
+    optional bool is_del = 4; // 是否删除
+    optional DatelineRange dateline_range = 5; // 时间区间
+}
+
+message ListPostReply {
+    int32 page = 1; // 当前页码
+    int32 page_total = 2; // 总页数
+    repeated Post posts = 3;
+}
+
+message DatelineRange {
+    google.protobuf.Timestamp start = 1;
+    google.protobuf.Timestamp end = 2;
+}
+
+message TogglePostRequest {
+    int32 id = 1;
+}
+
+message TogglePostReply {
+    int32 id = 1;
+    bool is_del = 2;
+}
+
+message GetPostRequest {
+    int32 id = 1;
+    optional bool is_del = 2;
+    optional bool inc_hit = 3; // 是否增加点击量
+}
+
+message GetPostReply {
+    optional Post post = 1;
+}
