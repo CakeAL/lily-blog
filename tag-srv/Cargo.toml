@@ -1,0 +1,18 @@
+[package]
+name = "tag-srv"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dotenv = "0.15"
+tokio = { version = "1", features = ["full"] }
+tonic = "0.12"
+sea-orm = { version = "1.0", features = [
+    "sqlx-postgres",
+    "runtime-tokio-native-tls",
+    "macros",
+    "debug-print",
+] }
+chrono = "0.4"
+
+proto = { path = "../proto" }
