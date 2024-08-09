@@ -19,6 +19,7 @@ pub async fn select_tag_exists_by_name(db: &DatabaseConnection, name: &str) -> R
 pub async fn insert_new_tag(db: &DatabaseConnection, name: &str) -> Result<i32> {
     let new_tag = tag::ActiveModel {
         name: Set(name.to_owned()),
+        is_del: Set(false),
         ..Default::default()
     };
     let res = tag::Entity::insert(new_tag).exec(db).await?;
