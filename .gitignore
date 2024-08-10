@@ -1,3 +1,5 @@
 /target
+gen_html
 
 .DS_Store
+.idea

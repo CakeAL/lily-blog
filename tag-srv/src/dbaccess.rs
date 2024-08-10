@@ -58,7 +58,7 @@ pub async fn update_tag_del(db: &DatabaseConnection, id: i32) -> Result<bool> {
         .exec_with_returning(db)
         .await?;
 
-    match res.get(0) {
+    match res.first() {
         Some(row) => Ok(row.is_del),
         None => Err(anyhow!("No such tag")),
     }

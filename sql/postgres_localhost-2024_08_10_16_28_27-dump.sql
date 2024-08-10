@@ -109,7 +109,8 @@ CREATE TABLE public.post (
     words_len integer DEFAULT 0,
     is_del boolean DEFAULT false NOT NULL,
     publish_time timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    update_time timestamp with time zone
+    update_time timestamp with time zone,
+    tag_id integer[]
 );
 
 
@@ -220,7 +221,7 @@ COPY public.comment (id, post_id, name, hashed_email, content, created_at, is_de
 -- Data for Name: post; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.post (id, title, summary, md_path, html_path, hit, words_len, is_del, publish_time, update_time) FROM stdin;
+COPY public.post (id, title, summary, md_path, html_path, hit, words_len, is_del, publish_time, update_time, tag_id) FROM stdin;
 \.
 
 
@@ -229,6 +230,10 @@ COPY public.post (id, title, summary, md_path, html_path, hit, words_len, is_del
 --
 
 COPY public.tag (id, name, is_del) FROM stdin;
+3	tag3	f
+4	tag4	t
+5	tag5	f
+2	tag2	f
 \.
 
 
@@ -257,7 +262,7 @@ SELECT pg_catalog.setval('public.post_id_seq', 1, false);
 -- Name: table_name_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.table_name_id_seq', 1, false);
+SELECT pg_catalog.setval('public.table_name_id_seq', 5, true);
 
 
 --

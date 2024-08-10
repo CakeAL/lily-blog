@@ -40,7 +40,7 @@ impl TagService for Tag {
         }
 
         // create the tag
-        let res = insert_new_tag(&*self.db_conn, &name)
+        let res = insert_new_tag(&self.db_conn, &name)
             .await
             .map_err(|err| Status::internal(err.to_string()))?;
         Ok(Response::new(CreateTagReply { id: res }))
@@ -62,7 +62,7 @@ impl TagService for Tag {
         }
 
         // edit the tag
-        let rows_affected = update_tag(&*self.db_conn, id, &name)
+        let rows_affected = update_tag(&self.db_conn, id, &name)
             .await
             .map_err(|err| Status::internal(err.to_string()))?;
         Ok(Response::new(EditTagReply {
@@ -76,7 +76,7 @@ impl TagService for Tag {
         request: Request<ListTagsRequest>,
     ) -> Result<Response<ListTagsReply>, Status> {
         let ListTagsRequest { name, is_del } = request.into_inner();
-        let res = select_tags(&*self.db_conn, &name, &is_del)
+        let res = select_tags(&self.db_conn, &name, &is_del)
             .await
             .map_err(|err| Status::internal(err.to_string()))?;
 
@@ -103,7 +103,7 @@ impl TagService for Tag {
     ) -> Result<Response<ToggleTagReply>, Status> {
         let ToggleTagRequest { id } = request.into_inner();
 
-        let is_del = update_tag_del(&*self.db_conn, id)
+        let is_del = update_tag_del(&self.db_conn, id)
             .await
             .map_err(|err| Status::internal(err.to_string()))?;
 
@@ -119,8 +119,8 @@ impl TagService for Tag {
             .condition
             .ok_or(tonic::Status::invalid_argument("Invalid argument"))?;
         let res = match condition {
-            Condition::Id(id) => select_tag_exists_by_id(&*self.db_conn, id).await,
-            Condition::Name(name) => select_tag_exists_by_name(&*self.db_conn, &name).await,
+            Condition::Id(id) => select_tag_exists_by_id(&self.db_conn, id).await,
+            Condition::Name(name) => select_tag_exists_by_name(&self.db_conn, &name).await,
         }
         .map_err(|err| Status::internal(err.to_string()))?;
         Ok(Response::new(TagExistsReply { exists: res > 0 }))
@@ -132,7 +132,7 @@ impl TagService for Tag {
     ) -> Result<Response<GetTagInfoReply>, Status> {
         let GetTagInfoRequest { id, is_del } = request.into_inner();
 
-        let res = select_tag_info(&*self.db_conn, id, &is_del)
+        let res = select_tag_info(&self.db_conn, id, &is_del)
             .await
             .map_err(|err| Status::internal(err.to_string()))?;
 

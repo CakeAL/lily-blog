@@ -9,3 +9,6 @@ build:
 
 run-tag:
     cargo run --package tag-srv
+
+gen-entity:
+    sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/lily-blog -o entity/src/entity
