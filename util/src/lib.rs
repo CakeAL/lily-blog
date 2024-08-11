@@ -68,7 +68,7 @@ pub fn gen_html(md_path: &str) -> Result<(String, i32)> {
 }
 
 /// get_summary 获取 md_path 路径文章的前 200 字
-pub fn get_summary(md_path: &str) -> anyhow::Result<String> {
+pub fn get_summary(md_path: &str) -> Result<String> {
     let file = File::open(md_path)?;
     let reader = BufReader::new(file);
     let mut res = String::new();
@@ -119,24 +119,47 @@ fn clean_markdown(text: &str) -> String {
 }
 
 pub fn timestamp_conversion(tm: Option<prost_types::Timestamp>) -> Option<DateTimeWithTimeZone> {
-    match tm {
-        Some(tm) => Some(DateTimeWithTimeZone::from(
-            Local.timestamp_opt(tm.seconds, 0).unwrap(),
-        )),
+    tm.map(|tm| DateTimeWithTimeZone::from(Local.timestamp_opt(tm.seconds, 0).unwrap()))
+}
+
+pub fn datetime_conversion(dt: Option<DateTimeWithTimeZone>) -> Option<prost_types::Timestamp> {
+    match dt {
+        Some(dt) => {
+            let mut timestamp: prost_types::Timestamp = Default::default();
+            timestamp.seconds = dt.timestamp();
+            timestamp.nanos = 0;
+            Some(timestamp)
+        }
         None => None,
     }
 }
 
 pub fn tags_to_u8(tags: Vec<i32>) -> Vec<u8> {
+    // 数据库中使用 X1X 进行间隔存储，比如 X1XX2X 进行查询时直接查询 X1X 即可
+    // （防止只使用一个间隔符号，例如 11X12X 查询 1X 出错）
+    use std::fmt::Write;
     tags.iter()
-        .map(|num| format!("'{}'", num))
-        .collect::<String>()
+        .fold(String::new(), |mut str, num| {
+            let _ = write!(str, "X{num}X");
+            str
+        })
         .into_bytes()
+}
+
+pub fn u8_to_tags(bytes: Vec<u8>) -> Vec<i32> {
+    // 将 Vec<u8> 转换为 String
+    let string = String::from_utf8(bytes).unwrap_or("".to_string()); // 直接忽略算了
+
+    // 分割字符串并过滤空字符串
+    string
+        .split('X')
+        .filter_map(|part| part.parse::<i32>().ok())
+        .collect()
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::{gen_html, get_summary};
+    use crate::{gen_html, get_summary, tags_to_u8, u8_to_tags};
 
     #[test]
     fn test_gen_html() {
@@ -150,5 +173,14 @@ mod tests {
         let md_path = "/Users/cakeal/Desktop/vsc/lily-blog/README.md";
         let res = get_summary(md_path);
         dbg!(res.unwrap());
+    }
+
+    #[test]
+    fn test_u8_to_tags() {
+        let tags = vec![1, 2, 3, 4, 5];
+        let bytes = tags_to_u8(tags.clone());
+        dbg!(String::from_utf8(bytes.clone()).unwrap());
+        let reformed_tags = u8_to_tags(bytes);
+        assert_eq!(tags, reformed_tags);
     }
 }
