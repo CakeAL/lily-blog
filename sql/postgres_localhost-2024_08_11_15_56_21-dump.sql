@@ -110,7 +110,7 @@ CREATE TABLE public.post (
     is_del boolean DEFAULT false NOT NULL,
     publish_time timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     update_time timestamp with time zone,
-    tag_id integer[]
+    tag_id bytea
 );
 
 
@@ -200,43 +200,6 @@ ALTER TABLE ONLY public.post ALTER COLUMN id SET DEFAULT nextval('public.post_id
 
 ALTER TABLE ONLY public.tag ALTER COLUMN id SET DEFAULT nextval('public.table_name_id_seq'::regclass);
 
-
---
--- Data for Name: admin; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.admin (id, email, password, is_del) FROM stdin;
-\.
-
-
---
--- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.comment (id, post_id, name, hashed_email, content, created_at, is_del) FROM stdin;
-\.
-
-
---
--- Data for Name: post; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.post (id, title, summary, md_path, html_path, hit, words_len, is_del, publish_time, update_time, tag_id) FROM stdin;
-\.
-
-
---
--- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.tag (id, name, is_del) FROM stdin;
-3	tag3	f
-4	tag4	t
-5	tag5	f
-2	tag2	f
-\.
-
-
 --
 -- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -255,7 +218,7 @@ SELECT pg_catalog.setval('public.comment_id_seq', 1, false);
 -- Name: post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.post_id_seq', 1, false);
+SELECT pg_catalog.setval('public.post_id_seq', 1, true);
 
 
 --

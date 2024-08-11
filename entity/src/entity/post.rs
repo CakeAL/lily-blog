@@ -16,7 +16,8 @@ pub struct Model {
     pub is_del: bool,
     pub publish_time: DateTimeWithTimeZone,
     pub update_time: Option<DateTimeWithTimeZone>,
-    pub tag_id: Option<Vec<i32>>,
+    #[sea_orm(column_type = "VarBinary(StringLen::None)", nullable)]
+    pub tag_id: Option<Vec<u8>>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

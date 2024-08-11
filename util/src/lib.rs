@@ -1,5 +1,7 @@
 use anyhow::{anyhow, Result};
 use dotenv::dotenv;
+use sea_orm::prelude::DateTimeWithTimeZone;
+use sea_orm::sqlx::types::chrono::{Local, TimeZone};
 use sea_orm::{Database, DatabaseConnection};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
@@ -114,6 +116,22 @@ fn clean_markdown(text: &str) -> String {
             )
         })
         .collect()
+}
+
+pub fn timestamp_conversion(tm: Option<prost_types::Timestamp>) -> Option<DateTimeWithTimeZone> {
+    match tm {
+        Some(tm) => Some(DateTimeWithTimeZone::from(
+            Local.timestamp_opt(tm.seconds, 0).unwrap(),
+        )),
+        None => None,
+    }
+}
+
+pub fn tags_to_u8(tags: Vec<i32>) -> Vec<u8> {
+    tags.iter()
+        .map(|num| format!("'{}'", num))
+        .collect::<String>()
+        .into_bytes()
 }
 
 #[cfg(test)]
