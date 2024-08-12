@@ -140,7 +140,7 @@ pub async fn select_a_post(
     if let Some(is_del) = is_del {
         select = select.filter(Column::IsDel.eq(is_del));
     }
-    if inc_hit.unwrap_or(false) {
+    if inc_hit.unwrap_or(true) {
         select = select.col_expr(Column::Hit, Expr::col(Column::Hit).add(1));
     }
     let res = select.exec_with_returning(db).await?;
