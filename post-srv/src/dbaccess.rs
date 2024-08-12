@@ -7,6 +7,7 @@ use sea_orm::{
     ColumnTrait, DatabaseConnection, EntityTrait, PaginatorTrait, QueryFilter, QueryOrder,
     QuerySelect,
 };
+use sea_orm::sqlx::types::chrono::Local;
 use util::gen_html;
 
 pub async fn insert_new_post(
@@ -44,6 +45,7 @@ pub async fn update_post(
         .col_expr(Column::TagId, Expr::value(Some(util::tags_to_u8(tag_id))))
         .col_expr(Column::MdPath, Expr::value(md_path))
         .col_expr(Column::Summary, Expr::value(Some(summary)))
+        .col_expr(Column::UpdateTime, Expr::value(Some(DateTimeWithTimeZone::from(Local::now()))))
         .exec(db)
         .await?;
     Ok(res.rows_affected)

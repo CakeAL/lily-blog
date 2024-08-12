@@ -1,5 +1,6 @@
 /target
 gen_html
+test_file
 
 .DS_Store
 .idea

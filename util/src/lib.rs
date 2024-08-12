@@ -58,7 +58,7 @@ pub fn gen_html(md_path: &str) -> Result<(String, i32)> {
     fs::write(path.clone(), html)?;
     let cleaned_md = clean_markdown(&md);
     let words_len = cleaned_md.chars().count() as i32;
-    println!("{cleaned_md}");
+    // println!("{cleaned_md}");
     Ok((
         path.to_str()
             .ok_or(anyhow!("Path to_str() err!"))?
