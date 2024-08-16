@@ -366,6 +366,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "comment-srv"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "entity",
+ "proto",
+ "sea-orm",
+ "tokio",
+ "tonic",
+ "tracing",
+ "tracing-subscriber",
+ "util",
+]
+
+[[package]]
 name = "const-oid"
 version = "0.9.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"

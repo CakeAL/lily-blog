@@ -200,6 +200,7 @@ ALTER TABLE ONLY public.post ALTER COLUMN id SET DEFAULT nextval('public.post_id
 
 ALTER TABLE ONLY public.tag ALTER COLUMN id SET DEFAULT nextval('public.table_name_id_seq'::regclass);
 
+
 --
 -- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -218,7 +219,7 @@ SELECT pg_catalog.setval('public.comment_id_seq', 1, false);
 -- Name: post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.post_id_seq', 1, true);
+SELECT pg_catalog.setval('public.post_id_seq', 3, true);
 
 
 --
@@ -258,6 +259,14 @@ ALTER TABLE ONLY public.post
 
 ALTER TABLE ONLY public.tag
     ADD CONSTRAINT table_name_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comment comment_post_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comment
+    ADD CONSTRAINT comment_post_id_fk FOREIGN KEY (post_id) REFERENCES public.post(id);
 
 
 --
