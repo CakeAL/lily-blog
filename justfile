@@ -13,5 +13,8 @@ run-tag:
 run-post:
     cargo run --package post-srv
 
+run-comment:
+    cargo run --package comment-srv
+
 gen-entity:
     sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/lily-blog -o entity/src/entity

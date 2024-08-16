@@ -11,7 +11,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .compact()
         .init();
 
-    let addr = get_service_addr(util::Service::Post).map_err(|err| {
+    let addr = get_service_addr(util::Service::Comment).map_err(|err| {
         tracing::error!("{}", err);
         err
     })?;
