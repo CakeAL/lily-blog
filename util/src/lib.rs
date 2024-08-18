@@ -1,3 +1,5 @@
+pub mod password;
+
 use anyhow::{anyhow, Result};
 use dotenv::dotenv;
 use sea_orm::prelude::DateTimeWithTimeZone;

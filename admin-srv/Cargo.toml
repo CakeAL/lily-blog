@@ -1,0 +1,21 @@
+[package]
+name = "admin-srv"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tonic = "0.12"
+sea-orm = { version = "1.0", features = [
+    "sqlx-postgres",
+    "runtime-tokio-native-tls",
+    "macros",
+    "debug-print",
+] }
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+proto = { path = "../proto" }
+entity = { path = "../entity" }
+util = { path = "../util" }

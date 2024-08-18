@@ -1,3 +1,3 @@
 [workspace]
-members = [ "comment-srv", "entity", "post-srv","proto", "tag-srv", "util"]
+members = [ "admin-srv", "comment-srv", "entity", "post-srv","proto", "tag-srv", "util"]
 resolver = "2"
