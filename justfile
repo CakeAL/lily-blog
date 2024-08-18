@@ -16,5 +16,8 @@ run-post:
 run-comment:
     cargo run --package comment-srv
 
+run-admin:
+    cargo run --package admin-srv
+
 gen-entity:
     sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/lily-blog -o entity/src/entity
