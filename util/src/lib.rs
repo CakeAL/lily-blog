@@ -15,6 +15,7 @@ pub enum Service {
     Post,
     Comment,
     Admin,
+    BlogApi,
 }
 
 pub async fn get_db_connection() -> Result<DatabaseConnection> {
@@ -26,12 +27,14 @@ pub async fn get_db_connection() -> Result<DatabaseConnection> {
 
 pub fn get_service_addr(srv: Service) -> Result<String> {
     dotenv().ok();
-    match srv {
-        Service::Tag => Ok(format!("[::1]:{}", env::var("TAG_SRV_PORT")?)),
-        Service::Post => Ok(format!("[::1]:{}", env::var("POST_SRV_PORT")?)),
-        Service::Comment => Ok(format!("[::1]:{}", env::var("COMMENT_SRV_PORT")?)),
-        Service::Admin => Ok(format!("[::1]:{}", env::var("ADMIN_SRV_PORT")?)),
-    }
+    let value = match srv {
+        Service::Tag => env::var("TAG_SRV_PORT")?,
+        Service::Post => env::var("POST_SRV_PORT")?,
+        Service::Comment => env::var("COMMENT_SRV_PORT")?,
+        Service::Admin => env::var("ADMIN_SRV_PORT")?,
+        Service::BlogApi => env::var("BLOG_API_PORT")?,
+    };
+    Ok(format!("[::1]:{}", value))
 }
 
 pub fn get_service_url(srv: Service) -> Result<String> {
