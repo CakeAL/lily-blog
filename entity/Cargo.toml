@@ -10,3 +10,6 @@ sea-orm = { version = "1.0", features = [
     "macros",
     "debug-print",
 ] }
+serde = { version = "1.0", features = ["derive"] }
+
+proto = { path = "../proto" }

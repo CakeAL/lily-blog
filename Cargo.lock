@@ -316,6 +316,7 @@ dependencies = [
  "entity",
  "proto",
  "serde",
+ "serde_json",
  "tokio",
  "tonic",
  "tower-http",
@@ -597,7 +598,9 @@ dependencies = [
 name = "entity"
 version = "0.1.0"
 dependencies = [
+ "proto",
  "sea-orm",
+ "serde",
 ]
 
 [[package]]

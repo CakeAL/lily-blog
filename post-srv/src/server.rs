@@ -151,7 +151,7 @@ fn model_to_post(post: &entity::entity::post::Model) -> proto::Post {
     proto::Post {
         id: post.id,
         title: post.title.to_owned(),
-        tag_id: util::u8_to_tags(post.tag_id.to_owned().unwrap_or_default()),
+        tag_id: util::u8_to_tags(post.tag_id.to_owned().unwrap_or_default()), // tag_id 在这儿捏
         summary: post.summary.to_owned(),
         md_path: post.md_path.to_owned(),
         html_path: post.html_path.to_owned(),
