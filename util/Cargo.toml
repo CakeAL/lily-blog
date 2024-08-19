@@ -15,3 +15,5 @@ anyhow = "1"
 markdown = "1.0.0-alpha.19"
 prost-types = "0.13"
 bcrypt = "0.15"
+
+proto = { path="../proto" }

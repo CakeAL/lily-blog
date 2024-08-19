@@ -41,3 +41,9 @@ pub struct ListPostRes {
     pub page_total: i32,
     pub posts: Vec<Post>,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct GetPostRes {
+    pub post: Post,
+    pub content: String,
+}

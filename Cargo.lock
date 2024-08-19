@@ -2923,6 +2923,7 @@ dependencies = [
  "dotenv",
  "markdown",
  "prost-types",
+ "proto",
  "sea-orm",
  "tokio",
 ]

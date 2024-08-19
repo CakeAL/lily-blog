@@ -130,10 +130,31 @@ pub fn timestamp_conversion(tm: Option<prost_types::Timestamp>) -> Option<DateTi
 pub fn datetime_conversion(dt: Option<DateTimeWithTimeZone>) -> Option<prost_types::Timestamp> {
     match dt {
         Some(dt) => {
-            let mut timestamp: prost_types::Timestamp = Default::default();
-            timestamp.seconds = dt.timestamp();
-            timestamp.nanos = 0;
+            let timestamp = prost_types::Timestamp {
+                seconds: dt.timestamp(),
+                nanos: 0,
+            };
             Some(timestamp)
+        }
+        None => None,
+    }
+}
+
+pub fn i64_to_dateline_range(i: Option<(i64, i64)>) -> Option<proto::DatelineRange> {
+    match i {
+        Some(i) => {
+            let start = prost_types::Timestamp {
+                seconds: i.0,
+                nanos: 0,
+            };
+            let end = prost_types::Timestamp {
+                seconds: i.0,
+                nanos: 0,
+            };
+            Some(proto::DatelineRange {
+                start: Some(start),
+                end: Some(end),
+            })
         }
         None => None,
     }

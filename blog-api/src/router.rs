@@ -9,5 +9,7 @@ pub async fn route_not_found() -> StatusCode {
 }
 
 pub fn post_routes() -> Router<AppState> {
-    Router::new().route("/api/get_all", get(get_all_posts))
+    Router::new()
+        .route("/api/get_all", get(search_posts))
+        .route("/api/get_post/:id", get(get_single_post))
 }
