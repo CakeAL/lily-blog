@@ -16,6 +16,8 @@ async fn start() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = Router::new()
         .merge(post_routes())
+        .merge(tag_routes())
+        .merge(comment_routes())
         .fallback(any(route_not_found))
         .with_state(app_state).layer(
         TraceLayer::new_for_http()

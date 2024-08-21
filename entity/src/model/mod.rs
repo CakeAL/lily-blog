@@ -1,8 +1,8 @@
 // proto 类型 到 Rust 结构体类型转换
 
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 pub struct Post {
     pub id: i32,
     pub title: String,
@@ -35,15 +35,53 @@ impl From<proto::Post> for Post {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 pub struct ListPostRes {
     pub page: i32,
     pub page_total: i32,
     pub posts: Vec<Post>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 pub struct GetPostRes {
     pub post: Post,
     pub content: String,
+}
+
+#[derive(Serialize)]
+pub struct Tag {
+    pub id: i32,
+    pub name: String,
+}
+
+impl From<proto::Tag> for Tag {
+    fn from(t: proto::Tag) -> Self {
+        Self {
+            id: t.id,
+            name: t.name,
+        }
+    }
+}
+
+#[derive(Serialize)]
+pub struct Comment {
+    id: i32,
+    post_id: i32,
+    name: String,
+    hashed_email: String,
+    content: String,
+    created_at: i64,
+}
+
+impl From<proto::Comment> for Comment {
+    fn from(c: proto::Comment) -> Self {
+        Self {
+            id: c.id,
+            post_id: c.post_id,
+            name: c.name,
+            hashed_email: c.hashed_email,
+            content: c.content,
+            created_at: c.created_at.unwrap_or_default().seconds,
+        }
+    }
 }
