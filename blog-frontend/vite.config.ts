@@ -25,4 +25,13 @@ export default defineConfig({
       resolvers: [NaiveUiResolver()],
     }),
   ],
+  server: {
+    port: 8080,
+    proxy: {
+      '/api': {
+        target: "http://[::1]:8081",
+        changeOrigin: true,
+      }
+    }
+  }
 });

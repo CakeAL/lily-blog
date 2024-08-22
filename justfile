@@ -22,5 +22,13 @@ run-admin:
 run-blog:
     cargo run --package blog-api
 
+run-all:
+    just run-tag &
+    just run-post &
+    just run-comment &
+    just run-admin &
+    just run-blog &
+    wait
+
 gen-entity:
     sea-orm-cli generate entity -u postgres://postgres:postgres@localhost:5432/lily-blog -o entity/src/entity
